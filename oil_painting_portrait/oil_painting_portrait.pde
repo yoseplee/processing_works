@@ -36,6 +36,7 @@ class Particle {
     y = height/2;
     float a = random(TWO_PI);
     float speed = random(1,2);
+//    float speed = random(1,50);
     vx = cos(a)*speed;
     vy = sin(a)*speed;
   }
@@ -43,13 +44,17 @@ class Particle {
   void display() {
     noStroke();
     color c = frog.get(int(x),int(y));
-    fill(c,25);
+//    fill(c,25);
+    fill(c,50); // -> latter parameter is opacity.
     ellipse(x, y, 12, 12);
+//    ellipse(x, y, 14, 14); //-> manage the size of single dots
   }
 
   void move() {
     x = x + vx;//random(-5, 5);
+//    x = x + random(-5, 5);
     y = y + vy;//random(-5, 5);
+//    y = y + random(-5, 5);
     if (y < 0) {
       y = height;
     } 
