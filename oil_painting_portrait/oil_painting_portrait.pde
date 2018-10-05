@@ -46,7 +46,9 @@ class Particle {
     color c = frog.get(int(x),int(y));
 //    fill(c,25);
     fill(c,50); // -> latter parameter is opacity.
-    ellipse(x, y, 12, 12);
+//    ellipse(x, y, 12, 12);
+    triangle(x, y, x+12, y-24, x+12+12, y);
+//    triangle(x, y, 12, 12, 12, 12);
 //    ellipse(x, y, 14, 14); //-> manage the size of single dots
   }
 
