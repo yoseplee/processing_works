@@ -12,6 +12,7 @@ Kinect: Microsoft Kinect V2
 Libs
 1. openkinect_processing
 2. blobDetection
+3. Video
 
 ### references
 https://shiffman.net/p5/kinect/
