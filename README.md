@@ -14,6 +14,16 @@ Libs
 2. blobDetection
 3. Video
 
+
+### 181006, pen-drawing looking work
+
+With internal webcam, draw randomly generated curves on canvers.
+select a sigle x,y point, and another new x and y point with add random(-20, 20) on it.
+draw a curve between the point and new point.
+if they are too close, its slope of curve is became exponentially slanting. Or, gradient.
+still working on it, and will be done until early Nov.
+
+
 ### references
 https://shiffman.net/p5/kinect/
 
