@@ -17,6 +17,8 @@ Libs
 
 ### 181006, pen-drawing looking work
 
+![screen shot 2018-10-06 at 16 30 48](https://user-images.githubusercontent.com/29854277/46569176-133a6a80-c98c-11e8-915b-4a3f1b140715.png)
+
 With internal webcam, draw randomly generated curves on canvers.
 select a sigle x,y point, and another new x and y point with add random(-20, 20) on it.
 draw a curve between the point and new point.
