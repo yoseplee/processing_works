@@ -1,9 +1,4 @@
 import processing.video.*;
-//global variables for plotting x,y value
-//
-//float x;
-//float y;
-
 
 Particle[] particles;
 //variable to hold onto Capture object.
@@ -14,14 +9,14 @@ void setup() {
   background(255);
   //start x and y in the center...
   //constant width, height is top of the canvas, I think.
-//  x = width/2;
-//  y = height/2;
+  //  x = width/2;
+  //  y = height/2;
   //start the capture process
   video = new Capture(this, width, height, 60);
   video.start();
-  
-  particles = new Particle[10];
-  for(int i = 0; i < particles.length; i++) {
+
+  particles = new Particle[1000];
+  for (int i = 0; i < particles.length; i++) {
     particles[i] = new Particle(video);
   }
 }
@@ -32,7 +27,7 @@ void captureEvent(Capture video) {
 }
 
 void draw() {
-  for(int i = 0 ; i < particles.length; i++) {
+  for (int i = 0; i < particles.length; i++) {
     particles[i].Draw();
     particles[i].Move();
   }
@@ -59,16 +54,27 @@ class Particle {
   }
 
   public void Draw() {
+    video.loadPixels();
     //set for the point to move. [-20, 20]
-    newx = constrain(x + random(-20, 20), 0, width);
-    newy = constrain(y + random(-20, 20), 0, height-1);
+    newx = constrain(x + random(-20, 20), 1, width);
+    newy = constrain(y + random(-20, 20), 1, height-1);
+    AdjustBound();
 
     //find the mid-point out of the line
     int midx = int((newx + x) / 2);
     int midy = int((newy + y) / 2);
 
     //pick the color from the video.
-    color c = video.pixels[(width-1-midx) + midy*video.width]; //??
+    //ArrayIndexOutOfBound Exception -1, 307200... why?
+    //the problem was the value range of newx and newy
+    //it is really rare case tough, it sometimes happen when it comes to instantiate 100+ particles.
+    //problem state: newx=0 AND newy=0 -> then ArrayIndexOutOfBound exception -1
+    //to fix this problem, set the constrain minimum value of newx and newy 0->1.
+    //after change it, there's no outofbound exception over 307200, which means its maximum point of 2d -> 1d array.
+    //currently, 640 * 480 -> max: 307200, I guess it is fixed by the method named AdujstBound(), 
+    //which adjusts the point into the min, max range of the pixels.
+//    println((width-1-midx) + midy*video.width);
+    color c = video.pixels[(width-1-midx) + midy*video.width];
 
     //stroke setting before draw something
     stroke(c, 90);
@@ -108,6 +114,19 @@ class Particle {
     //save (newx,newy) in x,y
     x = newx;
     y = newy;
+    
+//    if (y < 0) y = height;
+//    if (y > height) y = 0;
+//    if (x < 0) x = width;
+//    if (x > width) x = 0;
+  }
+
+  public void AdjustBound() {
+    //error handling
+    if (newy < 0) newy = height;
+    if (newy > height) newy = 0;
+    if (newx < 0) newx = width;
+    if (newx > width) newx = 0;
   }
 }
 
