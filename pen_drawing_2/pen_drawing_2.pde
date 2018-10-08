@@ -15,7 +15,7 @@ void setup() {
   video = new Capture(this, width, height, 60);
   video.start();
 
-  particles = new Particle[1000];
+  particles = new Particle[100];
   for (int i = 0; i < particles.length; i++) {
     particles[i] = new Particle(video);
   }
@@ -56,8 +56,8 @@ class Particle {
   public void Draw() {
     video.loadPixels();
     //set for the point to move. [-20, 20]
-    newx = constrain(x + random(-20, 20), 1, width);
-    newy = constrain(y + random(-20, 20), 1, height-1);
+    newx = constrain(x + random(-40, 40), 1, width);
+    newy = constrain(y + random(-40, 40), 1, height-1);
     AdjustBound();
 
     //find the mid-point out of the line
@@ -81,7 +81,7 @@ class Particle {
     strokeWeight(0.7);
     noFill();
     //Draw a line from (x, y) to (newx, newy)
-    line(x, y, newx, newy);
+//    line(x, y, newx, newy);
 
     //Draw a curve from (x, y) to (newx, newy)
     float mostDifferent = (x * x) - (newx * newx);
@@ -96,10 +96,10 @@ class Particle {
     //condition of classification: mostDifferent is the difference betw x^2 or y^2.
     if (mostDifferent * mostDifferent > 10000) {
       //set for sharp curve,
-      bPointX1 = random(x-10, x+10);
-      bPointY1= random(y-3000, y+3000);
-      bPointX2 = random(newx-10, newx+10);
-      bPointY2= random(newy-3000, newy+3000);
+      bPointX1 = random(x-5, x+5);
+      bPointY1= random(y-4000, y+4000);
+      bPointX2 = random(newx-5, newx+5);
+      bPointY2= random(newy-4000, newy+4000);
     }
     //else, set just curve.
     bPointX1 = random(x-10, x+10);
