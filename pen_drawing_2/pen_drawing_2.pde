@@ -15,7 +15,7 @@ void setup() {
   video = new Capture(this, width, height, 60);
   video.start();
 
-  particles = new Particle[100];
+  particles = new Particle[2500];
   for (int i = 0; i < particles.length; i++) {
     particles[i] = new Particle(video);
   }
@@ -48,8 +48,13 @@ class Particle {
   }
 
   public Particle(Capture c) {
-    x = width/2;
-    y = height/2;
+//    x = width/2;
+//    y = height/2;
+    //for the random starting point
+    x = random(1, width);
+    y = random(1, height-1);
+    newx = 0.0;
+    newy = 0.0;
     video = c;
   }
 
