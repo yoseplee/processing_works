@@ -90,7 +90,7 @@ void draw() {
 
 void setupFlowfield() {
   // set stroke weight (for particle display) to 2.5
-  strokeWeight(0.7);
+  strokeWeight(0.5);
   // initialize all particles in the flow
   for(int i=0; i<flow.length; i++) {
     flow[i] = new Particle(i/10000.0);
