@@ -40,7 +40,7 @@ String[] palettes = {
 };
 
 // an array called flow of 2250 Particle objects (see Particle class)
-Particle[] flow = new Particle[2250];
+Particle[] flow = new Particle[1000];
 // global variables to influence the movement of all particles
 float globalX, globalY;
 
@@ -59,7 +59,7 @@ void setup() {
   blobs = createImage(kinectWidth/3, kinectHeight/3, RGB);
   // initialize blob detection object to the blob image dimensions -> chagne to the lib, blobDetection
   theBlobDetection = new BlobDetection(blobs.width, blobs.height);
-  theBlobDetection.setThreshold(0.2);
+  theBlobDetection.setThreshold(0.38);
   setupFlowfield();
 }
 
@@ -78,7 +78,7 @@ void draw() {
   // copy the image into the smaller blob image
   blobs.copy(cam, 0, 0, cam.width, cam.height, 0, 0, blobs.width, blobs.height);
   // blur the blob image
-  blobs.filter(BLUR);
+//  blobs.filter(BLUR);
   // detect the blobs
   theBlobDetection.computeBlobs(blobs.pixels);
   // clear the polygon (original functionality)
@@ -90,7 +90,7 @@ void draw() {
 
 void setupFlowfield() {
   // set stroke weight (for particle display) to 2.5
-  strokeWeight(2.5);
+  strokeWeight(0.7);
   // initialize all particles in the flow
   for(int i=0; i<flow.length; i++) {
     flow[i] = new Particle(i/10000.0);

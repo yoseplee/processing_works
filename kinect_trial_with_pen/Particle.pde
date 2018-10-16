@@ -13,9 +13,11 @@ class Particle {
   void updateAndDisplay() {
     // let it flow, end with a new x and y position
     id += 0.01;
-    d = (noise(id, x/globalY, y/globalY)-0.5)*globalX;
-    x += cos(radians(d))*s;
-    y += sin(radians(d))*s;
+//    d = (noise(id, x/globalY, y/globalY)-0.5)*globalX;
+    x = random(x-80, x+80);
+    y = random(y-80, y+80);
+//    x += cos(radians(d))*s;
+//    y += sin(radians(d))*s;
 
     // constrain to boundaries
     if (x<-10) x=xp=kinectWidth+10;
@@ -42,8 +44,16 @@ class Particle {
     // individual particle color
     stroke(col);
     // line from previous to current position
-    line(xp, yp, x, y);
-    
+    float cxp, cyp, dx, dy, con1, con2;
+    con1 = 200;
+    con2 = 200;
+    cxp = random(xp-con1, xp+con1);
+    cyp = random(yp-con2, yp+con2);
+    dx = random(xp-con1, xp+con1);
+    dy = random(yp-con2, yp+con2);
+//    line(xp, yp, x, y);
+    curve(cxp, cyp, xp, yp, x, y, dx, dy);
+        
     // set previous to current position
     xp=x;
     yp=y;
