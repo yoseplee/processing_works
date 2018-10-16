@@ -133,3 +133,7 @@ void setRandomColors(int nthFrame) {
   }
 }
 
+void mouseClicked() {
+  int m = millis();
+  save("kinect_export_at+"+m+".png");
+}
