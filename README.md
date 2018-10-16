@@ -14,6 +14,12 @@ Libs
 2. blobDetection
 3. Video
 
+### 181016, pen-drawing work with kinect2
+![kinect_export_at 14893](https://user-images.githubusercontent.com/29854277/46995472-e1778f80-d153-11e8-87a8-9694dc1dcf13.png)
+
+Based on Kinect example with CAN Kinect Physics.. https://github.com/msp/CANKinectPhysics
+Modified its particle to be pen-drawing like.
+
 
 ### 181006, pen-drawing looking work
 
