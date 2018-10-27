@@ -33,7 +33,7 @@ void setup() {
 void draw() {
 
   pg.beginDraw(); 
-  pg.stroke(0, 1); //stroke(int rgb, float alpha: opacity of the stroke)
+  pg.stroke(127, 1); //stroke(int rgb, float alpha: opacity of the stroke)
   //gksqjsdp rmflf ghlr tnfmf wjdgksek. 5sms gksqjsdp 5qjs rmflseksms Emt.
   //gksqjsdp rmfuwlsms ghlrdl aksgdmftnfhr ej Qkffl rmfuwlamfh dlwjsdml smRladl sksek.
   for (int i = 0; i < 100; i++) {

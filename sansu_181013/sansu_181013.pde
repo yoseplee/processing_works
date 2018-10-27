@@ -55,6 +55,7 @@ void aStroke(PGraphics pg) {
     float crit = gHeight * noise(x/100, val);
 //    float crit = val*x*gHeight; //* noise(x/230, val);
     pg.point(x, crit);
+    println(x + "::" + crit);
     x = x+1;
   }
 }
