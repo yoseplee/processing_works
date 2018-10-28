@@ -5,35 +5,34 @@ Minim minim;
 AudioPlayer sound;
 PGraphics pg;
 
-
 /****************************/
 /***********SETTING**********/
 /****************************/
 
 //Canvas size setting.
-int gWidth = 2560;
-int gHeight = 1440;
+final int gWidth = 2560;
+final int gHeight = 1440;
 
 //I/O setting.
-int bufferSize = 1024 - 1; //should be modified.
-String path = "src/";
-String fileName = "jindo";
-String expander = ".mp3";
+final int bufferSize = 1024 - 1; //should be modified.
+final String path = "src/";
+final String fileName = "jindo";
+final String expander = ".mp3";
 int fileNo = 0; /* don't touch */
 
 //color setting.
-float[] bgRGBA = {177.0 , 149.0 , 75.0, 100.0};
-float[] strokeRGBA = {1.0 , 1.0 , 1.0, 10.0};
+final float[] bgRGBA = {177.0 , 149.0 , 75.0, 100.0};
+final float[] strokeRGBA = {1.0 , 1.0 , 1.0, 10.0};
 
 //need experiment... effect on slope of result
-int slope = 450;
-int sensitivity = 100;
-float interval = 1.0; //interval betw x and next x
+final int slope = 450;
+final int sensitivity = 100;
+final float interval = 1.0; //interval betw x and next x
 
-//want to export? then switch iWant = 0 to 2
+//want to export? then switch iWant = 0 to 1 or 2
 //to make movie, you need to use "moviemaker" tool with exported files.
 //0-> don't do, 1-> tif mode, 2->png mode
-int iWant = 0;
+final int iWant = 0;
 
 /****************************/
 /****************************/
@@ -79,6 +78,7 @@ void aStroke() {
     for (int i = 0; i < bufferSize; i++) {
       gain += sound.mix.get(i);
     }
+//    println(gain);
     float crit = gHeight/2 + (noise(x/sensitivity, gain)*slope);
     pg.point(x, crit);
     point(x, crit);
