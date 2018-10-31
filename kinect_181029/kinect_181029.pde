@@ -9,8 +9,6 @@ import org.openkinect.freenect.*;
 import org.openkinect.tests.*;
 import org.openkinect.processing.*;
 import org.openkinect.freenect2.*;
-
-
 // this is a regular java import so we can use and extend the polygon class (see PolygonBlob)
 import java.awt.Polygon;
 
@@ -24,9 +22,10 @@ PolygonBlob poly = new PolygonBlob();
 
 // PImage to hold incoming imagery and smaller one for blob detection
 PImage cam, blobs;
+PGraphics pg;
 // the kinect's dimensions to be used later on for calculations
 int kinectWidth = 640;
-int kinectHeight = 480;
+int kinectHeight = 720;
 // to center and rescale from 640x480 to higher custom resolutions
 float reScale;
 
@@ -40,13 +39,23 @@ String[] palettes = {
 };
 
 // an array called flow of 2250 Particle objects (see Particle class)
-Particle[] flow = new Particle[1000];
+Particle[] flow = new Particle[700];
 // global variables to influence the movement of all particles
-float globalX, globalY;
+
+
+//Font and Image
+PFont aCinemaB;
+PFont aCinemaM;
+PFont aCinemaMS;
+PImage bicLogo;
+PImage bicBox;
+int baseLineLeft = 40;
+int baseLineCenter = height/2;
 
 void setup() {
   // it's possible to customize this, for example 1920x1080
   size(1280, 720, OPENGL);
+  pg = createGraphics(kinectWidth, kinectHeight);
 
   kinect2 = new Kinect2(this);
   kinect2.initVideo();
@@ -54,80 +63,106 @@ void setup() {
   // calculate the reScale value
   // currently it's rescaled to fill the complete width (cuts of top-bottom)
   // it's also possible to fill the complete height (leaves empty sides)
-  reScale = (float) width / kinectWidth;
+  reScale = (float) height / kinectHeight;
   // create a smaller blob image for speed and efficiency
   blobs = createImage(kinectWidth/3, kinectHeight/3, RGB);
   // initialize blob detection object to the blob image dimensions -> chagne to the lib, blobDetection
   theBlobDetection = new BlobDetection(blobs.width, blobs.height);
-  theBlobDetection.setThreshold(0.38);
+  theBlobDetection.setThreshold(0.35);
   setupFlowfield();
+
+
+
+  //Font and Image
+  aCinemaB = createFont("aCinemaB.ttf", 40);
+  aCinemaM = createFont("aCinemaM.ttf", 15);
+  aCinemaMS = createFont("aCinemaM.ttf", 12);
+  bicLogo = loadImage("bicLogo.png");
+
+  bicLogo.resize(bicLogo.width/13, bicLogo.height/13);
+  bicBox = loadImage("bicBox.png");
+  bicBox.resize(bicBox.width/3, bicBox.height/3);
 }
 
 void draw() {
   // fading background
-  noStroke();
-  fill(255, 100);
-  rect(0, 0, width, height);
-  // update the SimpleOpenNI object
-  //  context.update();
-  // put the image into a PImage
-  //  cam = context.depthImage();
+  //  background(240, 238, 226);
+
+  background(240, 238, 226);
+  pg.beginDraw();
+  pg.noFill();
+  pg.background(240, 238, 226);
+
   cam = kinect2.getVideoImage();
+  //  cam.loadPixels();
   // copy the image into the smaller blob image
   blobs.copy(cam, 0, 0, cam.width, cam.height, 0, 0, blobs.width, blobs.height);
   // blur the blob image
-//  blobs.filter(BLUR);
+
   // detect the blobs
   theBlobDetection.computeBlobs(blobs.pixels);
   // clear the polygon (original functionality)
   poly.reset();
   // create the polygon from the blobs (custom functionality, see class)
   poly.createPolygon();
-  drawFlowfield();
+  //  drawFlowfield();
+  drawFlowfield2();
+
+  pg.endDraw();
+
+  image(pg, width/2 - kinectWidth/2, height/2 - kinectHeight/2);
+
+
+  //on left
+  textFont(aCinemaM);
+  textAlign(LEFT);
+  fill(100);
+  text("News", baseLineLeft+15, height/2 - 70);
+
+  textFont(aCinemaMS);
+  textAlign(LEFT);
+  fill(150);
+  text("01-wave", baseLineLeft+15, height/2 + 100);
+  text("Hello no, I'll static son. you'll see", baseLineLeft+15, height/2 + 120);
+  text("it's okay", baseLineLeft+15, height/2 + 140);
+  text("BIC ballpen", baseLineLeft+15, 80);
+
+  textFont(aCinemaB);
+  textAlign(LEFT);
+  fill(0);
+  text("Your BIC possibilities,", baseLineLeft, height/2);
+  text("start with a ", baseLineLeft, height/2 + 55);
+
+  image(bicLogo, baseLineLeft+225, height/2 + 7);
+
+
+
+  //on Right
+  image(bicBox, width-300, height/2 - 70);
+  textFont(aCinemaMS);
+  textAlign(LEFT);
+  fill(150);
+  text("02-Cacedus", width-300, height/2 + 100);
+  text("You know I can't hear none of that", width-300, height/2 + 120);
+  text("spend the night shit", width-300, height/2 + 140);
 }
 
 void setupFlowfield() {
   // set stroke weight (for particle display) to 2.5
-  strokeWeight(0.7);
+  pg.strokeWeight(0.7);
   // initialize all particles in the flow
   for (int i=0; i<flow.length; i++) {
     flow[i] = new Particle(i/10000.0);
   }
-  // set all colors randomly now
-  setRandomColors(1);
 }
 
-void drawFlowfield() {
+void drawFlowfield2() {
   // center and reScale from Kinect to custom dimensions
-  translate(0, (height-kinectHeight*reScale)/2);
-  scale(reScale);
-  // set global variables that influence the particle flow's movement
-  globalX = noise(frameCount * 0.01) * width/2 + width/4;
-  globalY = noise(frameCount * 0.005 + 5) * height;
-  // update and display all particles in the flow
+  //left-right / updown
+  //  translate((width/2 - kinectWidth/2), height/2 - kinectHeight/2);
+  //  scale(reScale);
   for (Particle p : flow) {
     p.updateAndDisplay();
-  }
-  // set the colors randomly every 240th frame
-  setRandomColors(240);
-}
-
-// sets the colors every nth frame
-void setRandomColors(int nthFrame) {
-  if (frameCount % nthFrame == 0) {
-    // turn a palette into a series of strings
-    String[] paletteStrings = split(palettes[int(random(palettes.length))], ",");
-    // turn strings into colors
-    color[] colorPalette = new color[paletteStrings.length];
-    for (int i=0; i<paletteStrings.length; i++) {
-      colorPalette[i] = int(paletteStrings[i]);
-    }
-    // set background color to first color from palette
-    bgColor = colorPalette[0];
-    // set all particle colors randomly to color from palette (excluding first aka background color)
-    for (int i=0; i<flow.length; i++) {
-      flow[i].col = colorPalette[int(random(1, colorPalette.length))];
-    }
   }
 }
 
